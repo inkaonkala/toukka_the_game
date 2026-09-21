@@ -9,14 +9,30 @@ const ctx = canvas.getContext("2d");
 const player1 = new Player(
     100,
     150,
-    "assets/A1.png",
+    {
+        s1: "assets/A1.png",
+        s2: "assets/A2.png",
+        s3: "assets/A3.png",
+
+        u1: "assets/A1d.png",
+        u2: "assets/A2d.png",
+        u3: "assets/A3d.png"
+    },
     1
 );
 
 const player2 = new Player(
     600,
     250,
-    "assets/toB.png",
+    {
+        s1: "assets/B1.png",
+        s2: "assets/B2.png",
+        s3: "assets/B3.png",
+
+        u1: "assets/B1d.png",
+        u2: "assets/B2d.png",
+        u3: "assets/B3d.png"
+    },
     -1
 );
 
