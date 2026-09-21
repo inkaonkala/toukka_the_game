@@ -14,24 +14,33 @@ export class Player {
     }
 
     moveUp() {
+        if (this.move_y > 0)
+            return;
         this.move_x = 0;
         this.move_y = -this.speed;
     }
 
 
     moveDown() {
+        if (this.move_y < 0)
+                return;
         this.move_x = 0;
         this.move_y = this.speed;
     }
 
 
     moveLeft() {
+
+        if (this.move_x > 0)
+            return;
         this.move_x = -this.speed;
         this.move_y = 0;
     }
 
 
     moveRight() {
+        if (this.move_x < 0)
+            return;
         this.move_x = this.speed;
         this.move_y = 0;
     }
