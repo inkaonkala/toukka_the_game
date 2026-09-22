@@ -1,4 +1,5 @@
 import { Player } from "./player.js";
+import { Trash } from "./trash.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -35,6 +36,11 @@ const player2 = new Player(
     },
     -1
 );
+
+const trash1 = new Trash(
+    400, 300,
+    "assets/trash1.png"
+)
 
 
 // KEYBOARD
@@ -114,6 +120,7 @@ function draw() {
 
     player1.draw(ctx);
     player2.draw(ctx);
+    trash1.draw(ctx);
 }
 
 

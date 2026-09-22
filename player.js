@@ -1,5 +1,3 @@
-const PART_DIS = 8;
-
 
 export class Player {
 
@@ -33,13 +31,13 @@ export class Player {
                 type: "body",
                 x: x - 20 * startDir,
                 y: y,
-                followDis: 8
+                followDis: 5
             },
             {
                 type: "butt",
                 x: x - 30 * startDir,
                 y: y,
-                followDis: 13
+                followDis: 10
             }
         ];
 
@@ -140,14 +138,26 @@ export class Player {
 
             let image;
 
+            const vertical = part.move_y != 0;
+
+
             if (part.type === "head") {
-                image = this.images.s1;
+                if (vertical)
+                    image = this.images.u1;
+                else
+                    image = this.images.s1;
             }
             else if (part.type === "body") {
-                image = this.images.s2;
+                if (vertical)
+                    image = this.images.u2;
+                else
+                    image = this.images.s2;
             }
             else if (part.type === "butt") {
-                image = this.images.s3;
+                if (vertical)
+                    image = this.images.u3;
+                else
+                    image = this.images.s3;
             }
 
             ctx.drawImage(
