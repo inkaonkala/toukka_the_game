@@ -109,9 +109,11 @@ function update() {
 
     if (trash1.collisionCheck(player1)) {
         console.log("ORANGE 1 point");
+        player1.grow();
     }
     if (trash1.collisionCheck(player2)) {
         console.log("GREEN 1 point")
+        player2.grow();
     }
 
 }

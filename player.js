@@ -167,4 +167,24 @@ export class Player {
             );
         }
     }
+
+    grow() {
+        const butt = this.parts[this.parts.length - 1];
+
+        const newPart = {
+            type: "body",
+            x: butt.x,
+            y: butt.y,
+            followDis: butt.followDis
+        };
+
+        this.parts.splice(
+            this.parts.length -1,
+            0,
+            newPart
+        );
+
+        butt.followDis += 5;
+    }
+
 }
