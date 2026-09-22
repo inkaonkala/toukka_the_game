@@ -106,6 +106,14 @@ function update() {
 
     player1.wrapAround(canvas);
     player2.wrapAround(canvas);
+
+    if (trash1.collisionCheck(player1)) {
+        console.log("ORANGE 1 point");
+    }
+    if (trash1.collisionCheck(player2)) {
+        console.log("GREEN 1 point")
+    }
+
 }
 
 
