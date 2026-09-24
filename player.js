@@ -131,6 +131,46 @@ export class Player {
         }
     }   
 
+    drawPart(ctx, part, image) {
+
+        ctx.save();
+
+        // Move canvas origin to this body part
+        ctx.translate(part.x, part.y);
+
+        // RGHT = mirror horizontal
+        if (part.move_x > 0) {
+            ctx.scale(-1, 1);
+
+            ctx.drawImage(
+                image,
+                -image.width,
+                0
+            );
+        }      
+
+        // UP = mirror vertically
+        else if (part.move_y < 0) {
+            ctx.scale(1, -1);
+
+            ctx.drawImage(
+                image,
+                0,
+                -image.height
+            );
+        }
+
+        // RIGHT or DOWN = normal
+        else {
+            ctx.drawImage(
+                image,
+                0,
+                0
+            );
+        }
+
+        ctx.restore();
+    }
 
     draw(ctx) {
 
@@ -160,11 +200,12 @@ export class Player {
                     image = this.images.s3;
             }
 
-            ctx.drawImage(
-                image,
-                part.x,
-                part.y
-            );
+            //ctx.drawImage(
+            //    image,
+            //    part.x,
+            //    part.y
+            //);
+            this.drawPart(ctx, part, image);
         }
     }
 
