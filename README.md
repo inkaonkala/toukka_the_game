@@ -24,4 +24,4 @@ No grand purpose. Just toukkas.
 
 ## ▶️ Play
 
-**[PLAY TOUKKA](YOUR-GITHUB-PAGES-LINK-HERE)**
+**[PLAY TOUKKA[]](https://inkaonkala.github.io/toukka_the_game)**
