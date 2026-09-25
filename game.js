@@ -7,10 +7,17 @@ const ctx = canvas.getContext("2d");
 const MAX_TRASH = 3;
 const trash = [];
 
+let gameStart = false;
+let gameOver = false;
+let winner = "";
+
 
 // CREATE PLAYERS
 
-const player1 = new Player(
+let player1 = createPlayer1();
+
+function createPlayer1() {
+    return new Player(
     100,
     150,
     {
@@ -24,8 +31,12 @@ const player1 = new Player(
     },
     1
 );
+}
 
-const player2 = new Player(
+let player2 = createPlayer2();
+
+function createPlayer2() {
+    return new Player(
     600,
     250,
     {
@@ -39,6 +50,7 @@ const player2 = new Player(
     },
     -1
 );
+}
 
 //TRASH TEST
 //const trash1 = new Trash(
@@ -53,6 +65,14 @@ const keys = {};
 
 window.addEventListener("keydown", function(event) {
     keys[event.key] = true;
+
+    if (event.code === "Space") {
+        console.log("HAHAHAHAHAHAHAHJAH")
+        if (!gameStart)
+            gameStart = true;
+        else if (gameOver)
+            restartGame();
+    }
 });
 
 window.addEventListener("keyup", function(event) {
@@ -117,6 +137,9 @@ function spawn_trash() {
 
 function update() {
 
+    if (!gameStart || gameOver)
+        return; 
+
     handleInput();
 
     player1.move();
@@ -128,18 +151,29 @@ function update() {
     // PLAYER COLLISION
 
 
-    if ( player1.canAttack() && player1.collisionCheck(player2)) {
+    if ( !gameOver && player1.canAttack() && player1.collisionCheck(player2)) {
         console.log("ORANGE HIT GREEN");
-        player2.shrink()
+        if (player2.shrink()) {
+            player1.grow();
+            if (player2.hasNoBody()) {
+                gameOver = true;
+                winner = "ORANGE";
+            }
+        }
         player1.startAttackCooldown();
-        player1.grow();
+        
     }
 
-    if ( player2.canAttack() && player2.collisionCheck(player1)) {
+    if ( !gameOver && player2.canAttack() && player2.collisionCheck(player1)) {
         console.log("GREEN HIT ORANGE");
-        player1.shrink();
+        if (player1.shrink()) {
+            player2.grow();
+            if (player1.hasNoBody()) {
+                gameOver = true;
+                winner = "GREEN";
+            }
+        }
         player2.startAttackCooldown();
-        player2.grow();
     }
 
     //TRASH COLLISION
@@ -174,11 +208,20 @@ function draw() {
         canvas.height
     );
 
+    //START SCREEN
+    if (!gameStart) {
+        drawStartScreen();
+        return;
+    }
+
     player1.draw(ctx);
     player2.draw(ctx);
     for (const item of trash)
         item.draw(ctx);
 //    trash1.draw(ctx);
+
+    if (gameOver)
+        drawGameOver();
 }
 
 
@@ -195,3 +238,64 @@ for (let i = 0; i < MAX_TRASH; i++)
         spawn_trash();
 
 gameLoop();
+
+function drawStartScreen() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.textAlign = "center";
+
+    ctx.font = "60px monospace";
+    ctx.fillText(
+        "TOUKKA",
+        canvas.width / 2,
+        250
+    );
+
+    ctx.font = "24px monospace";
+    ctx.fillText(
+        "PRESS SPACE",
+        canvas.width / 2,
+        330
+    );
+}
+
+function drawGameOver() {
+
+    ctx.textAlign = "center";
+
+    ctx.font = "48px monospace";
+
+    ctx.fillText(
+        winner + " WINS!",
+        canvas.width / 2,
+        250
+    );
+
+    ctx.font = "24px monospace";
+
+    ctx.fillText(
+        "PRESS SPACE TO PLAY AGAIN",
+        canvas.width / 2,
+        320
+    );
+}
+
+function restartGame() {
+    player1 = createPlayer1();
+    player2 = createPlayer2();
+
+    trash.length = 0;
+
+    for (let i = 0; i < MAX_TRASH; i++)
+        spawn_trash();
+
+    winner = "";
+    gameOver = false;
+    gameStart = true;
+}

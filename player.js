@@ -256,6 +256,9 @@ export class Player {
         this.attackCooldown = 90;
     }
 
+    hasNoBody() {
+        return this.parts.length <= 2;
+    }
 
     collisionCheck(otherPlayer) {
 
