@@ -11,6 +11,15 @@ let gameStart = false;
 let gameOver = false;
 let winner = "";
 
+//MUSIC
+const music = new Audio("assets/toukka.wav");
+const burb = new Audio("assets/BIGburb.mp3");
+const nom = new Audio("assets/NOM.mp3");
+music.loop = true;
+music.volume = 0.5;
+burb.volume = 0.7;
+nom.volume = 0.9;
+
 
 // CREATE PLAYERS
 
@@ -67,9 +76,10 @@ window.addEventListener("keydown", function(event) {
     keys[event.key] = true;
 
     if (event.code === "Space") {
-        console.log("HAHAHAHAHAHAHAHJAH")
-        if (!gameStart)
+        if (!gameStart) {
             gameStart = true;
+            music.play()
+        }
         else if (gameOver)
             restartGame();
     }
@@ -154,9 +164,11 @@ function update() {
     if ( !gameOver && player1.canAttack() && player1.collisionCheck(player2)) {
         console.log("ORANGE HIT GREEN");
         if (player2.shrink()) {
+            nom.play();
             player1.grow();
             if (player2.hasNoBody()) {
                 gameOver = true;
+                burb.play();
                 winner = "ORANGE";
             }
         }
@@ -167,9 +179,11 @@ function update() {
     if ( !gameOver && player2.canAttack() && player2.collisionCheck(player1)) {
         console.log("GREEN HIT ORANGE");
         if (player1.shrink()) {
+            nom.play();
             player2.grow();
             if (player1.hasNoBody()) {
                 gameOver = true;
+                burb.play();
                 winner = "GREEN";
             }
         }
@@ -181,11 +195,15 @@ function update() {
 
         if (item.collisionCheck(player1)) {
             console.log("ORANGE 1 point");
+            nom.play();
             player1.grow();
+            
         }
         if (item.collisionCheck(player2)) {
             console.log("GREEN 1 point")
+            nom.play();
             player2.grow();
+        
         }
     }
 
