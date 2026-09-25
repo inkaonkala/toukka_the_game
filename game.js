@@ -98,6 +98,7 @@ function handleInput() {
     if (keys["ArrowRight"]) {
         player2.moveRight();
     }
+
 }
 
 
@@ -124,6 +125,24 @@ function update() {
     player1.wrapAround(canvas);
     player2.wrapAround(canvas);
 
+    // PLAYER COLLISION
+
+
+    if ( player1.canAttack() && player1.collisionCheck(player2)) {
+        console.log("ORANGE HIT GREEN");
+        player2.shrink()
+        player1.startAttackCooldown();
+        player1.grow();
+    }
+
+    if ( player2.canAttack() && player2.collisionCheck(player1)) {
+        console.log("GREEN HIT ORANGE");
+        player1.shrink();
+        player2.startAttackCooldown();
+        player2.grow();
+    }
+
+    //TRASH COLLISION
     for (const item of trash) {
 
         if (item.collisionCheck(player1)) {

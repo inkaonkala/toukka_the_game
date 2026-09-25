@@ -6,6 +6,8 @@ export class Player {
     //    this.y = y;
         this.speed = 3;
 
+        this.attackCooldown = 0;
+
         this.move_x = startDir * this.speed;
         this.move_y = 0;
 
@@ -85,6 +87,9 @@ export class Player {
 
         head.move_x = this.move_x;
         head.move_y = this.move_y;
+
+        if (this.attackCooldown > 0)
+            this.attackCooldown--;
 
         //save head x,y
         this.history.unshift({
@@ -226,6 +231,70 @@ export class Player {
         );
 
         butt.followDis += 5;
+    }
+
+    shrink() {
+        if (this.parts.length <= 2)
+                return false;
+
+        const butt = this.parts[this.parts.length - 1];
+
+        this.parts.splice(
+            this.parts.length - 2,
+            1
+        );
+
+        butt.followDis -= 5;
+        return true;
+    }
+
+    canAttack() {
+        return this.attackCooldown <= 0;
+    }
+
+    startAttackCooldown() {
+        this.attackCooldown = 90;
+    }
+
+
+    collisionCheck(otherPlayer) {
+
+        const head = this.parts[0];
+        const headImage = this.images.s1;
+
+        const headLeft = head.x;
+        const headRight = head.x + (headImage.width / 2);
+        const headTop = head.y;
+        const headDown = head.y + headImage.height;
+
+        for ( let i = 0; i < otherPlayer.parts.length; i++)
+        {
+            const part = otherPlayer.parts[i];
+
+            if (part.type === "head")
+                continue;
+
+            let partImage;
+
+            if (part.type === "body")
+                partImage = otherPlayer.images.s2;
+            else
+                partImage = otherPlayer.images.s3;
+
+            const partLeft = part.x;
+            const partRight = part.x + partImage.width;
+            const partTop = part.y;
+            const partDown = part.y + partImage.height;
+
+            if (
+                headRight > partLeft &&
+                headLeft < partRight &&
+                headDown > partTop &&
+                headTop < partDown) {
+                    return true;
+                }
+        }
+        return false;
     }
 
 }
